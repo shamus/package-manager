@@ -105,9 +105,8 @@ function testRemoveCommandWithRemainingDependencies() {
   const manifest = BufferedInput.from(commands);
   const report = new BufferedOutput();
 
-  console.log('Testing remove command with dependencies:');
+  console.log('Testing remove command with remaining dependencies:');
   processManifest(manifest, report).then(() => {
-    console.log(report.toLines());
     assert.deepEqual(report.toLines(), ['DEPEND a b', 'DEPEND c b', 'INSTALL a', '   Installing b', '   Installing a', 'INSTALL c', '   Installing c', 'REMOVE a', '   Removing a', 'END']);
     console.log('...passed');
   });
@@ -158,7 +157,7 @@ testInstallCommandWithDependencies();
 testInstallCommandWithAlreadyInstalled();
 testRemoveCommand();
 testRemoveCommandWithDependencies();
-//testRemoveCommandWithRemainingDependencies();
+testRemoveCommandWithRemainingDependencies();
 testRemoveCommandWithConflicts();
 testRemoveCommandWithUninstalled();
 testListCommand();

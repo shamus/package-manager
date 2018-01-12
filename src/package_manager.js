@@ -52,21 +52,21 @@ class PackageManager {
     }
 
     const remove = (pkg, complain) => {
-      if (!this.dependencyGraph.canRemovePackage(definition)) {
+      if (!this.dependencyGraph.canRemovePackage(pkg.definition)) {
         if (complain) {
           this.reporter.message(`${pkg.name} is still needed`);
         }
         return;
       }
 
-      this.dependencyGraph.removePackage(definition);
+      this.dependencyGraph.removePackage(pkg.name);
       pkg.setInstalled(false);
       this.reporter.message(`Removing ${pkg.name}`);
 
       pkg.definition.dependencies.forEach(dependencyName => {
         const dependencyDefinition = this.dependencyGraph.findPackage(dependencyName);
-        const dependencyMetadata = this.installed.get(dependencyDefinition);
-        remove(dependencyMetadata);
+        const localDependency = this.installed.get(dependencyDefinition);
+        remove(localDependency);
       });
     }
 
