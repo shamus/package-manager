@@ -1,6 +1,7 @@
 const readline = require('readline');
 const CommandFactory = require('./src/command_factory');
 const Reporter = require('./src/reporter');
+const Registry = require('./src/registry');
 
 function parseLine(line) {
   return line.split(' ')
@@ -11,6 +12,7 @@ function parseLine(line) {
 
 module.exports = function(input, output) {
   const reporter = new Reporter(output);
+  const registry = new Registry();
   const commandFactory = new CommandFactory(reporter);
 
   return new Promise(function(resolve, reject) {
@@ -23,7 +25,7 @@ module.exports = function(input, output) {
         const [name, ...args] = parseLine(line);
         const command = commandFactory.build(name, args);
         reporter.echo(line);
-        command.invoke();
+        command.invoke(registry);
       })
       .on('close', () => {
         resolve();

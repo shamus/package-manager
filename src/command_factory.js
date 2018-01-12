@@ -1,7 +1,9 @@
 const Command = require('./command');
+const DependCommand = require('./commands/depend_command');
 const EndCommand = require('./commands/end_command');
 const UnknownCommand = require('./commands/unknown_command');
 
+const DEPEND = 'DEPEND';
 const END = 'END';
 
 class CommandFactory {
@@ -17,6 +19,9 @@ class CommandFactory {
     let command;
 
     switch(name) {
+      case DEPEND:
+        command = new DependCommand(args.shift(), args, this.reporter);
+        break;
       case END:
         command = new EndCommand(this, this.reporter);
         break;

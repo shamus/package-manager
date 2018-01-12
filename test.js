@@ -28,5 +28,18 @@ function testEndCommand() {
   });
 }
 
+function testDependCommand() {
+  const commands = [ 'DEPEND a b', 'END' ];
+  const manifest = BufferedInput.from(commands);
+  const report = new BufferedOutput();
+
+  processManifest(manifest, report).then(() => {
+    console.log('Testing depend command:');
+    assert.deepEqual(report.toLines(), ['DEPEND a b', 'END']);
+    console.log('...passed');
+  });
+}
+
 testUnknownCommands();
 testEndCommand();
+testDependCommand();
