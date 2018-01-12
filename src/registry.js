@@ -11,6 +11,15 @@ class Registry {
 
     return definition;
   }
+
+  findPackage(name) {
+    let definition = this.definitions.get(name);
+    if (definition === undefined) {
+      definition = this.definePackage(name);
+    }
+
+    return definition;
+  }
 }
 
 module.exports = Registry;
