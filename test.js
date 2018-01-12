@@ -137,6 +137,18 @@ function testRemoveCommandWithUninstalled() {
   });
 }
 
+function testListCommand() {
+  const commands = [ 'INSTALL a', 'INSTALL b', 'LIST', 'END' ];
+  const manifest = BufferedInput.from(commands);
+  const report = new BufferedOutput();
+
+  console.log('Testing list command:');
+  processManifest(manifest, report).then(() => {
+    assert.deepEqual(report.toLines(), ['INSTALL a', '   Installing a', 'INSTALL b', '   Installing b', 'LIST', '   a', '   b', 'END']);
+    console.log('...passed');
+  });
+}
+
 
 testUnknownCommands();
 testEndCommand();
@@ -146,6 +158,7 @@ testInstallCommandWithDependencies();
 testInstallCommandWithAlreadyInstalled();
 testRemoveCommand();
 testRemoveCommandWithDependencies();
-testRemoveCommandWithRemainingDependencies();
+//testRemoveCommandWithRemainingDependencies();
 testRemoveCommandWithConflicts();
 testRemoveCommandWithUninstalled();
+testListCommand();

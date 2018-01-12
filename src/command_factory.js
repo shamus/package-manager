@@ -2,12 +2,14 @@ const Command = require('./command');
 const DependCommand = require('./commands/depend_command');
 const EndCommand = require('./commands/end_command');
 const InstallCommand = require('./commands/install_command');
+const ListCommand = require('./commands/list_command');
 const RemoveCommand = require('./commands/remove_command');
 const UnknownCommand = require('./commands/unknown_command');
 
 const DEPEND = 'DEPEND';
 const END = 'END';
 const INSTALL = 'INSTALL';
+const LIST = 'LIST';
 const REMOVE = 'REMOVE';
 
 class CommandFactory {
@@ -28,6 +30,9 @@ class CommandFactory {
         break;
       case INSTALL:
         command = new InstallCommand(args, this.reporter);
+        break;
+      case LIST:
+        command = new ListCommand(this.reporter);
         break;
       case REMOVE:
         command = new RemoveCommand(args, this.reporter);

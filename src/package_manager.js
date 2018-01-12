@@ -72,6 +72,10 @@ class PackageManager {
 
     remove(localPackage, true);
   }
+
+  listPackages() {
+    Array.from(this.installed.keys()).forEach(metadata => this.reporter.message(metadata.name));
+  }
 }
 
 module.exports = PackageManager;
