@@ -42,6 +42,36 @@ class PackageManager {
 
     install(localPackage, true);
   }
+
+  removePackage(name) {
+    const definition = this.dependencyGraph.findPackage(name);
+    const localPackage = this.installed.get(definition);
+    if (localPackage === undefined || !localPackage.installed) {
+      this.reporter.message(`${name} is not installed`);
+      return;
+    }
+
+    const remove = (pkg, complain) => {
+      if (!this.dependencyGraph.canRemovePackage(definition)) {
+        if (complain) {
+          this.reporter.message(`${pkg.name} is still needed`);
+        }
+        return;
+      }
+
+      this.dependencyGraph.removePackage(definition);
+      pkg.setInstalled(false);
+      this.reporter.message(`Removing ${pkg.name}`);
+
+      pkg.definition.dependencies.forEach(dependencyName => {
+        const dependencyDefinition = this.dependencyGraph.findPackage(dependencyName);
+        const dependencyMetadata = this.installed.get(dependencyDefinition);
+        remove(dependencyMetadata);
+      });
+    }
+
+    remove(localPackage, true);
+  }
 }
 
 module.exports = PackageManager;

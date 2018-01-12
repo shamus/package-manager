@@ -1,4 +1,5 @@
 const CycleDetector = require('./graph/cycle_detector');
+const DependencyDetector = require('./graph/dependency_detector');
 const Graph = require('./graph');
 
 class DependencyGraph {
@@ -33,6 +34,22 @@ class DependencyGraph {
     this.packages.traverse(starting, cycleDetector);
 
     return cycleDetector.containsCycle;
+  }
+
+  removePackage(name) {
+    const pkg = this.registry.findPackage(name);
+    if (this.canRemovePackage(pkg)) {
+      this.packages.removeNode(pkg);
+    }
+  }
+
+  canRemovePackage(pkg) {
+    const nodes = this.packages.findNodes(node => node !== pkg);
+    const dependencyDetector = new DependencyDetector(pkg);
+    return nodes.every(node => {
+      this.packages.traverse(node, dependencyDetector);
+      return !dependencyDetector.isRequired;
+    });
   }
 }
 
