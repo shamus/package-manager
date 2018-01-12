@@ -16,4 +16,17 @@ function testUnknownCommands() {
   });
 }
 
+function testEndCommand() {
+  const commands = [ 'FOO', 'END', 'BAR' ];
+  const manifest = BufferedInput.from(commands);
+  const report = new BufferedOutput();
+
+  processManifest(manifest, report).then(() => {
+    console.log('Testing end command:');
+    assert.deepEqual(report.toLines(), ['FOO', '   Unknown command', 'END']);
+    console.log('...passed');
+  });
+}
+
 testUnknownCommands();
+testEndCommand();

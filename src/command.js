@@ -4,7 +4,6 @@ class Command {
   }
 
   invoke() {
-    this.reporter.message("Unknown command");
   }
 }
 

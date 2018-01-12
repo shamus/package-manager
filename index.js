@@ -16,9 +16,13 @@ module.exports = function(input, output) {
   return new Promise(function(resolve, reject) {
     readline.createInterface({ input: input, terminal: false})
       .on('line', (line) => {
-        reporter.echo(line);
+        if (commandFactory.disabled) {
+          return;
+        }
+
         const [name, ...args] = parseLine(line);
         const command = commandFactory.build(name, args);
+        reporter.echo(line);
         command.invoke();
       })
       .on('close', () => {
