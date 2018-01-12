@@ -1,0 +1,11 @@
+{
+  "name": "package-manager",
+  "version": "1.0.0",
+  "description": "A simple package manager for an interview challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "Jeremy Morony",
+  "license": "ISC"
+}
